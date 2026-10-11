@@ -1,20 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name - Portfolio</title>
-  <meta name="description" content="Personal website of Your Name.">
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Benson Wong — personal portfolio and Computer Science projects." />
+  <title>Benson Wong | Personal Portfolio</title>
+  <style>
+    :root {
+      --navy: #172f55;
+      --blue: #2478f2;
+      --blue-light: #eaf3ff;
+      --text: #334a6b;
+      --muted: #647894;
+      --line: #e5ebf3;
+      --panel: #f5f8fc;
+      --white: #ffffff;
+      --shadow: 0 8px 24px rgba(24, 48, 83, .07);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, calc(100% - 40px)); margin: 0 auto; }
+
+    /* Navigation */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand { color: var(--navy); font-size: 1.15rem; font-weight: 800; letter-spacing: -.3px; }
+    .nav-links { display: flex; align-items: center; gap: 25px; font-size: .9rem; }
+    .nav-links a { padding: 21px 0; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+    .menu-toggle {
+      display: none; border: 1px solid var(--line); background: white; color: var(--navy);
+      border-radius: 8px; padding: 7px 10px; font-size: 1.1rem; cursor: pointer;
+    }
+
+    /* Hero */
+    .hero { background: linear-gradient(115deg, #f6f9fd 0%, #fff 65%, #f1f6fc 100%); }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1.12fr; gap: 54px;
+      align-items: center; padding-top: 34px; padding-bottom: 34px;
+    }
+    .eyebrow { margin: 0 0 2px; font-size: 1.25rem; color: #5b7394; }
+    h1 { margin: 0; color: var(--navy); font-size: clamp(2.4rem, 5vw, 3.35rem); line-height: 1.12; letter-spacing: -1.5px; }
+    .tagline { margin: 10px 0 14px; font-size: 1.05rem; color: #355477; font-weight: 500; }
+    .hero-copy { max-width: 490px; margin: 0 0 20px; font-size: .96rem; color: #526987; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 17px; border: 1px solid var(--blue); border-radius: 7px;
+      font-weight: 650; font-size: .9rem; transition: transform .2s, box-shadow .2s, background .2s;
+    }
+    .button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .button-primary { background: var(--blue); color: white; }
+    .button-outline { color: var(--blue); background: white; }
+    .hero-photo {
+      width: 100%; height: 290px; object-fit: cover; border-radius: 8px;
+      box-shadow: 0 6px 22px rgba(24,48,83,.09);
+      background: #dbe6f2;
+    }
+
+    /* Section common styles */
+    section { scroll-margin-top: 82px; }
+    .section-title { color: var(--navy); margin: 0 0 20px; font-size: 1.35rem; line-height: 1.3; }
+    .section-title::after {
+      content: ""; display: block; width: 28px; height: 3px; margin-top: 8px;
+      border-radius: 2px; background: var(--blue);
+    }
+    .overview { padding: 28px 0 10px; }
+    .overview-grid { display: grid; grid-template-columns: 1.05fr 1.05fr .72fr; gap: 24px; align-items: stretch; }
+    .about-panel { padding: 6px 0 12px; }
+    .about-panel p { margin: 0 0 18px; font-size: .91rem; color: #526987; }
+    .facts { display: flex; flex-wrap: wrap; gap: 10px 18px; color: #526987; font-size: .82rem; }
+    .facts span { display: inline-flex; align-items: center; gap: 7px; }
+    .fact-icon { color: #355c8b; font-size: 1rem; }
+    .skills-panel { background: var(--panel); padding: 16px 18px; border-radius: 7px; }
+    .skills-panel .section-title { font-size: 1.15rem; margin-bottom: 12px; }
+    .skill-group { margin: 13px 0 17px; }
+    .skill-label { color: var(--navy); font-size: .78rem; font-weight: 750; margin-bottom: 7px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { display: inline-block; border: 1px solid #dce6f2; background: white; border-radius: 999px; padding: 3px 10px; font-size: .72rem; color: #4d6687; }
+    .quick-panel { border-left: 1px solid var(--line); padding: 6px 0 0 18px; }
+    .quick-panel .section-title { font-size: 1.15rem; }
+    .quick-link { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .85rem; color: #526987; }
+    .quick-link:last-child { border-bottom: 0; }
+    .quick-link:hover { color: var(--blue); }
+    .quick-link strong { color: #315784; font-size: 1rem; }
+
+    /* Projects and achievements */
+    .lower-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 30px; padding: 16px 0 26px; }
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .project-card { overflow: hidden; border: 1px solid var(--line); border-radius: 7px; box-shadow: 0 3px 12px rgba(24,48,83,.045); background: white; transition: transform .2s, box-shadow .2s; }
+    .project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .project-image { width: 100%; height: 92px; object-fit: cover; display: block; background: #dbe6f2; }
+    .project-content { padding: 10px 11px 12px; }
+    .project-content h3 { margin: 0 0 5px; color: var(--navy); font-size: .87rem; line-height: 1.35; }
+    .project-content p { margin: 0 0 10px; color: #5b7190; font-size: .76rem; line-height: 1.55; }
+    .project-content .chip { font-size: .66rem; padding: 2px 7px; }
+    .achievement-panel { background: var(--panel); border-radius: 7px; padding: 16px; }
+    .achievement-item { display: grid; grid-template-columns: 25px 1fr; gap: 12px; padding: 0 0 15px; margin-bottom: 14px; border-bottom: 1px solid #dbe5f0; }
+    .achievement-item:last-child { margin: 0; padding: 0; border: 0; }
+    .achievement-icon { font-size: 1.25rem; color: #2467bd; }
+    .achievement-item h3 { margin: 0 0 2px; color: var(--navy); font-size: .85rem; }
+    .achievement-item p, .achievement-item li { margin: 0; font-size: .76rem; color: #5b7190; }
+    .award-pill { display: inline-block; margin-top: 5px; border-radius: 999px; padding: 2px 8px; background: #e0efff; color: #1d67bd; font-size: .68rem; font-weight: 700; }
+    .achievement-item ul { margin: 5px 0 0; padding-left: 16px; }
+
+    /* Footer */
+    footer { background: #172f55; color: white; }
+    .footer-inner { min-height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 22px; padding-top: 14px; padding-bottom: 14px; }
+    .footer-brand { font-weight: 750; font-size: .98rem; }
+    .footer-tagline { font-size: .73rem; opacity: .82; }
+    .footer-nav { display: flex; flex-wrap: wrap; gap: 18px; font-size: .72rem; opacity: .9; }
+    .footer-nav a:hover { text-decoration: underline; }
+    .socials { display: flex; gap: 15px; font-size: 1rem; }
+    .socials a:hover { color: #9cc9ff; }
+
+    @media (max-width: 900px) {
+      .hero-grid { gap: 28px; }
+      .overview-grid { grid-template-columns: 1fr 1fr; }
+      .quick-panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); padding: 18px 0 0; }
+      .quick-panel .quick-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 20px; }
+      .lower-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(100% - 28px, 1100px); }
+      .nav { min-height: 60px; }
+      .menu-toggle { display: inline-block; }
+      .nav-links {
+        display: none; position: absolute; left: 0; right: 0; top: 60px; padding: 12px 20px 18px;
+        background: white; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 10px 0; }
+      .hero-grid { grid-template-columns: 1fr; padding-top: 28px; gap: 24px; }
+      .hero-photo { height: 220px; }
+      .eyebrow { font-size: 1.05rem; }
+      h1 { font-size: 2.55rem; }
+      .tagline { font-size: .95rem; }
+      .overview-grid { grid-template-columns: 1fr; gap: 18px; }
+      .quick-panel { grid-column: auto; }
+      .quick-panel .quick-links { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-image { height: 170px; }
+      .lower-grid { padding-top: 10px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-nav { gap: 12px; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Hi, I'm Benson Wong</h1>
-  <p>Welcome to my personal website.</p>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home">Benson Wong</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a class="active" href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
 
-  <nav>
-    <a href="/">Home</a>
-    <a href="/projects/">Projects</a>
-    <a href="/about/">About</a>
-    <a href="/contact/">Contact</a>
-  </nav>
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Hello, I'm</p>
+          <h1>Benson Wong</h1>
+          <p class="tagline">Computer Science Student | Problem Solver | Lifelong Learner</p>
+          <p class="hero-copy">
+            I'm a passionate and curious student, interested in computer science,
+            artificial intelligence and technology. I enjoy building projects,
+            solving problems and exploring how technology can make a positive
+            impact on society.
+          </p>
+          <div class="button-row">
+            <a class="button button-primary" href="#projects">⌘ &nbsp; View My Projects</a>
+            <a class="button button-outline" href="cv.pdf" download>⬇ &nbsp; Download CV</a>
+          </div>
+        </div>
+        <img class="hero-photo"
+          src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85"
+          alt="Scenic city and mountains at sunset" />
+      </div>
+    </section>
+
+    <section class="overview container" id="about">
+      <div class="overview-grid">
+        <div class="about-panel">
+          <h2 class="section-title">About Me</h2>
+          <p>
+            I am a student with a strong interest in Computer Science and
+            Artificial Intelligence. I have always been fascinated by how
+            computers can solve real-world problems and improve people's lives.
+            In the future, I hope to study Computer Science at university and
+            use technology to contribute to society.
+          </p>
+          <div class="facts">
+            <span><b class="fact-icon">⌖</b> Hong Kong</span>
+            <span><b class="fact-icon">🎓</b> University Student</span>
+            <span><b class="fact-icon">▦</b> Computing</span>
+          </div>
+        </div>
+
+        <div class="skills-panel" id="skills">
+          <h2 class="section-title">Skills</h2>
+          <div class="skill-group">
+            <div class="skill-label">〈/〉 &nbsp; Programming Languages</div>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">C++</span>
+              <span class="chip">Java</span><span class="chip">JavaScript</span>
+              <span class="chip">HTML</span><span class="chip">CSS</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">⚙ &nbsp; Tools &amp; Technologies</div>
+            <div class="chips">
+              <span class="chip">Git</span><span class="chip">GitHub</span>
+              <span class="chip">VS Code</span><span class="chip">Arduino</span>
+              <span class="chip">Robotics</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">♟ &nbsp; Soft Skills</div>
+            <div class="chips">
+              <span class="chip">Logical Thinking</span><span class="chip">Problem Solving</span>
+              <span class="chip">Teamwork</span><span class="chip">Communication</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="quick-panel" id="contact">
+          <h2 class="section-title">Quick Links</h2>
+          <div class="quick-links">
+            <a class="quick-link" href="https://github.com/" target="_blank" rel="noopener noreferrer"><span><strong>◉</strong> &nbsp; GitHub</span><b>›</b></a>
+            <a class="quick-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer"><span><strong>in</strong> &nbsp; LinkedIn</span><b>›</b></a>
+            <a class="quick-link" href="mailto:your.email@example.com"><span><strong>✉</strong> &nbsp; Email</span><b>›</b></a>
+            <a class="quick-link" href="cv.pdf" download><span><strong>⬇</strong> &nbsp; Download CV</span><b>›</b></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="container lower-grid">
+      <section id="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+          <article class="project-card">
+            <img class="project-image" src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=700&q=80" alt="Robotics project" />
+            <div class="project-content">
+              <h3>Robot Car</h3>
+              <p>A robotics project using Arduino and sensor modules. It explores hardware control and basic programming.</p>
+              <div class="chips"><span class="chip">Arduino</span><span class="chip">C++</span><span class="chip">Electronics</span></div>
+            </div>
+          </article>
+          <article class="project-card">
+            <img class="project-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=700&q=80" alt="Code on a computer screen" />
+            <div class="project-content">
+              <h3>Personal Website</h3>
+              <p>This portfolio website is built with HTML and CSS and can be hosted using GitHub Pages.</p>
+              <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span></div>
+            </div>
+          </article>
+          <article class="project-card">
+            <img class="project-image" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=700&q=80" alt="Artificial intelligence concept" />
+            <div class="project-content">
+              <h3>AI Project</h3>
+              <p>Exploring artificial intelligence and machine learning ideas to solve practical problems.</p>
+              <div class="chips"><span class="chip">Python</span><span class="chip">Machine Learning</span><span class="chip">AI</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="achievements">
+        <h2 class="section-title">Achievements</h2>
+        <div class="achievement-panel">
+          <div class="achievement-item">
+            <div class="achievement-icon">🏆</div>
+            <div>
+              <h3>Inno@Taipo2024</h3>
+              <p>Most Innovative Technology Creation Award (Secondary Schools Category)</p>
+              <span class="award-pill">First Runner Up / 亞軍</span>
+            </div>
+          </div>
+          <div class="achievement-item">
+            <div class="achievement-icon">★</div>
+            <div>
+              <h3>School Activities</h3>
+              <ul>
+                <li>IT Prefect</li>
+                <li>Robot Club Member</li>
+                <li>Physics Club Member</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">Benson Wong</div>
+        <div class="footer-tagline">Building a better future with technology.</div>
+      </div>
+      <div class="footer-nav">
+        <a href="#home">Home</a><a href="#about">About</a><a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+      </div>
+      <div class="socials">
+        <a href="https://github.com/" aria-label="GitHub" target="_blank" rel="noopener noreferrer">◉</a>
+        <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">in</a>
+        <a href="mailto:your.email@example.com" aria-label="Email">✉</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
 </body>
 </html>
