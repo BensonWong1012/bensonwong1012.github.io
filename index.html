@@ -381,7 +381,12 @@
     });
   </script>
   <script>
-      const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    languageToggle.addEventListener('click', changeLanguage);
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '☾';
+    });
+    const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
     }), { threshold: 0.12 });
     document.querySelectorAll('.hero-grid > div, .about-panel, .skills-panel, .quick-panel, #projects, #achievements, .contact-banner').forEach(el => { el.classList.add('reveal'); revealObserver.observe(el); });
