@@ -1,2 +1,2 @@
 # bensonwong.github.io
-My Website
+This is Benson Wong's Website Repository.
