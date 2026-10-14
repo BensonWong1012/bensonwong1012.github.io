@@ -210,4 +210,19 @@
 <body>
   <h1>test</h1>
 </body>
+<script>
+  <!--languageToggle.addEventListener('click', changeLanguage);-->
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '☾';
+  });
+  const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
+  }), { threshold: 0.12 });
+  document.querySelectorAll('.hero-grid > div, .about-panel, .skills-panel, .quick-panel, #projects, #achievements, .contact-banner').forEach(el => { el.classList.add('reveal'); revealObserver.observe(el); });
+  const topButton = document.createElement('button');
+  topButton.className = 'back-top'; topButton.textContent = '↑'; topButton.setAttribute('aria-label','Back to top'); document.body.appendChild(topButton);
+  window.addEventListener('scroll', () => topButton.classList.toggle('show', window.scrollY > 400));
+  topButton.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+</script>
 </html>
