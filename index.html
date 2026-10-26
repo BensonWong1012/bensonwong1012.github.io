@@ -88,7 +88,7 @@
       border-radius: 2px; background: var(--blue);
     }
     .overview { padding: 28px 0 10px; }
-    .overview-grid { display: grid; grid-template-columns: 1.05fr 1.05fr .72fr; gap: 24px; align-items: stretch; }
+    .overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
     .about-panel { padding: 6px 0 12px; }
     .about-panel p { margin: 0 0 18px; font-size: .91rem; color: #526987; }
     .facts { display: flex; flex-wrap: wrap; gap: 10px 18px; color: #526987; font-size: .82rem; }
@@ -179,9 +179,7 @@
       .eyebrow { font-size: 1.05rem; }
       h1 { font-size: 2.55rem; }
       .tagline { font-size: .95rem; }
-      .overview-grid {   display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 28px; }
+      .overview-grid { grid-template-columns: 1fr; gap: 18px; }
       .quick-panel { grid-column: auto; }
       .quick-panel .quick-links { grid-template-columns: 1fr; }
       .projects-grid { grid-template-columns: 1fr; }
